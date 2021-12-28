@@ -1,0 +1,14 @@
+{
+  "name": "vts-clock-standalone",
+  "version": "1.0.0",
+  "description": "System for sending data to avatar clock",
+  "main": "server/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Renpona",
+  "license": "ISC",
+  "dependencies": {
+    "websocket": "^1.0.34"
+  }
+}
