@@ -5,7 +5,41 @@
         <!--<link rel='stylesheet' href=''>-->
     </head>
     <body>
-        
-        <script src='script.js' async defer></script>
+        <div id="status">
+            <div id="connectionState"></div>
+            <div id="processStatus">
+                <span>Mode: </span><span id="modeStatus"></span>
+            </div>
+        </div>
+        <div id="setup">
+            <label for="port">VTS API Port: </label><input type="number" name="port" id="portInput"/>
+            <input id="connectBtn" type="button" value="Connect"/>
+        </div>
+        <div class="controls">
+            <select name="mode" id="modeSelect">
+                <option value="disable">Disable</option>
+                <option value="clock">Clock</option>
+                <option value="timer">Timer</option>
+                <option value="number">Number</option>
+            </select>
+            <div id="clock"></div>
+            <div id="timer">
+                <label for="seconds">Time in Seconds: </label><input type="number" name="seconds" id="timerSetting" />
+                <label for="timerStyle">Count Direction: </label><select name="timerStyle" id="timerStyle">
+                    <option value="up">Up</option>
+                    <option value="down">Down</option>
+                </select>
+            </div>
+            <div id="number">
+                <label for="inputVal">Input Value: </label>
+                <input type="text" name="inputVal" id="inputVal" maxlength=4 />
+            </div>
+            <input id="updateBtn" type="submit" value="Send Updated Info" />
+        </div>
+        <script src='vts-script.js' async defer></script>
+        <script src='browser-script.js' async defer></script>
+        <script>
+
+        </script>
     </body>
 </html>
