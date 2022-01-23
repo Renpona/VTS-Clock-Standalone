@@ -43,24 +43,8 @@ function startClock() {
             inputObject = parseNumberToObject(inputNumber, false);
         }
         mode = argument;
-        
-
-        
     }
     
-    //TODO: remove test data
-    let testData = {
-        "Digit1": -1,
-        "Digit2": 6,
-        "Digit3": 6,
-        "Digit4": 6,
-        "separator": 0
-    }
-    //inputObject = testData;
-
-    //test number display
-    //parseNumberToParams(testData);
-
     switch (mode) {
         case "number":
             timeKeeper = setInterval(parseObjectToParams, 800, inputObject);
