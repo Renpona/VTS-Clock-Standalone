@@ -3,12 +3,21 @@
   "version": "1.0.0",
   "description": "System for sending data to avatar clock",
   "main": "server/index.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.config.js",
+    "watch": "webpack --watch --config webpack.config.js"
   },
   "author": "Renpona",
   "license": "ISC",
   "dependencies": {
     "websocket": "^1.0.34"
+  },
+  "devDependencies": {
+    "css-loader": "^6.5.1",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1"
   }
 }

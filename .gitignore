@@ -1,5 +1,6 @@
 .vscode/
 *token.txt
+batches/
 
 # Logs
 logs
