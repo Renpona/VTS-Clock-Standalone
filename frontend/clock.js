@@ -1,4 +1,6 @@
 const utils = require('../vts_modules/utils');
+import { createNewParameter, sendRequest } from './vts-script.js';
+
 
 var timeKeeper; // Stores the setInterval used to keep the clock running
 var mode;
@@ -23,10 +25,10 @@ function startClock(mode, data) {
     let inputObject;
 
     if (mode == "timer") {
-        inputTime = data.timerSetting;
-        var direction = data.timerStyle;
+        inputTime = data.seconds;
+        var direction = data.direction;
     } else if (mode == "number") {
-        inputTime = data.inputVal;
+        inputTime = data.number;
         inputObject = parseNumberToObject(inputTime, false);
     }
     
@@ -48,11 +50,11 @@ function startClock(mode, data) {
 }
 
 function createParams() {
-    vtsConnection.createNewParameter(clockParams[1], "clock digit", -1, 9, 0);
-    vtsConnection.createNewParameter(clockParams[2], "clock digit", -1, 9, 0);
-    vtsConnection.createNewParameter(clockParams[3], "clock digit", -1, 9, 0);
-    vtsConnection.createNewParameter(clockParams[4], "clock digit", -1, 9, 0);
-    vtsConnection.createNewParameter(clockParams[0], "clock colon", 0, 1, 1);
+    createNewParameter(clockParams[1], "clock digit", -1, 9, 0);
+    createNewParameter(clockParams[2], "clock digit", -1, 9, 0);
+    createNewParameter(clockParams[3], "clock digit", -1, 9, 0);
+    createNewParameter(clockParams[4], "clock digit", -1, 9, 0);
+    createNewParameter(clockParams[0], "clock colon", 0, 1, 1);
 }
 
 function realTimeClock() {
@@ -117,10 +119,9 @@ function timer(inputTime, startTime, direction = "down") {
     let timeElapsed = currentTime - startTime;
     let remainingTime = inputTime - timeElapsed;
     
-    console.log(remainingTime);
+    //console.log(remainingTime);
     if (remainingTime < 1) {
         clearInterval(timeKeeper);
-        process.exit(0);
     }
     if (direction == "up") {
         remainingTime = Math.floor(timeElapsed / 1000);
@@ -155,7 +156,7 @@ function parseNumberToObject(inputNumber, separator) {
 
 function parseObjectToParams(data) {
     let paramArray = [];
-    for (i = 0; i < clockParams.length; i++) {
+    for (let i = 0; i < clockParams.length; i++) {
         let currParam = clockParams[i];
         if (data[currParam] || data[currParam] == 0) {
             paramArray.push(sendSingleNumber(currParam, data[currParam]));
@@ -168,11 +169,12 @@ function parseObjectToParams(data) {
 }
 
 function sendSingleNumber(param, value) {
-    return vtsConnection.createParamValue(param, value);
+    return utils.createParamValue(param, value);
 }
 
 function sendNumberRequest(paramArray) {
     let request = utils.buildRequest("InjectParameterDataRequest", {"parameterValues": paramArray});
-    vtsConnection.sendRequest(request);
+    sendRequest(request);
 }
 
+export { initClock, startClock }

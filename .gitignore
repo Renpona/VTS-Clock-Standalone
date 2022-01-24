@@ -1,6 +1,7 @@
 .vscode/
 *token.txt
 batches/
+frontend/script/main.js
 
 # Logs
 logs

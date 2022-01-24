@@ -6,13 +6,13 @@ class Auth {
         this.appName = null;
         this.devName = null;
         this.tokenSaved = false;
-        this.storageName = null;
+        this.storageName = "";
     }
     checkForCredentials(name, developer) {
         this.appName = name;
         this.devName = developer;
         this.storageName = "VTS " + this.appName;
-        if (localStorage.getItem(storageName)) {
+        if (localStorage.getItem(this.storageName)) {
             this.tokenSaved = true;
             this.token = localStorage.getItem(this.storageName);
             return this.tokenAuth();

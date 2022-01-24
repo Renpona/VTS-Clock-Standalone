@@ -1,15 +1,21 @@
-const utils = require('../vts_modules/utils');
+const events = require('events');
+const utils = require('../vts_modules/utils.js');
 const Auth = require('../vts_modules/auth-browser.js');
 const auth = new Auth();
 
+const eventEmitter = new events.EventEmitter();
+var vtsConnection = null;
+
 function connect(port) {
-    var socket = new WebSocket("ws://0.0.0.0:" + port);
+    //var socket = new WebSocket("ws://0.0.0.0:" + port);
+    var socket = new WebSocket("ws://localhost:" + port);
 
     // Connection opened
     socket.addEventListener('open', function (event) {
         //socket.send('Hello Server!');
         console.log("Connected to VTubeStudio on port " + port);
         socket.send(auth.checkForCredentials("Renpona", "VTuber clock"));
+        vtsConnection = socket;
     });
 
     // Error
@@ -18,10 +24,8 @@ function connect(port) {
     });
 
     socket.addEventListener('message', function (event) {
-        if (message.type === 'utf8') {
-            //console.log('Received Message: ' + message.utf8Data);
-            parseResponse(JSON.parse(message.utf8Data), socket);
-        }
+        //console.log('Received Message: ' + message.utf8Data);
+        parseResponse(JSON.parse(event.data), socket);
     });
 
 }
@@ -70,3 +74,20 @@ function parseResponse(response, connection) {
         }
     }
 }
+
+function sendRequest(request) {
+    //console.log("SendRequest: ", request);
+    vtsConnection.send(request);
+}
+
+function createNewParameter(paramName, explanation, min, max, defaultValue) {
+    let request = utils.createNewParameter(paramName, explanation, min, max, defaultValue);
+    //console.log("ParameterCreationRequest", request);
+    vtsConnection.send(request);
+}
+
+function updateConnectionState(connected, message) {
+    eventEmitter.emit("connectionState", connected, message);
+};
+
+export { eventEmitter, connect, parseResponse, createNewParameter, sendRequest }
