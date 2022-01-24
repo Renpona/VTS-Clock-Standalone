@@ -1,11 +1,14 @@
-const { connect } = require("../vts_modules/vtsConnector");
+import { connect, eventEmitter } from './vts-script.js';
+import { initClock, startClock } from './clock.js';
 
-var connectionStatus;
+var connectionStatus = false;
+initHandlers();
 
 function initHandlers() {
-    let port = document.getElementById("portInput").textContent;
-    document.getElementById("connectBtn").addEventListener('click', () => connect(port));
+    document.getElementById("connectBtn").addEventListener('click', () => connect(document.getElementById("portInput").value));
     document.getElementById("updateBtn").addEventListener('click', sendUpdatedValues);
+    eventEmitter.on("connectionState", updateConnectionState);
+    eventEmitter.once("authComplete", initClock);
 }
 
 function updateConnectionState(connected, message) {
@@ -18,15 +21,19 @@ function sendUpdatedValues() {
     let data = {};
     switch (mode) {
         case "disable":
+            startClock("disable");
             break;
         case "clock":
+            startClock("clock");
             break;
         case "timer":
-            data.seconds = document.getElementById("timerSetting");
-            data.direction = document.getElementById("timerStyle");
+            data.seconds = document.getElementById("timerSetting").value;
+            data.direction = document.getElementById("timerStyle").value;
+            startClock("timer", data);
             break;
         case "number":
-            data.number = document.getElementById("inputVal");
+            data.number = document.getElementById("inputVal").value;
+            startClock("number", data);
             break;
         default:
             break;
