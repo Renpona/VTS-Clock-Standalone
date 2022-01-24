@@ -114,6 +114,7 @@ function runHotkey(hotkeyId) {
     vtsConnection.send(request);
 }
 
+// MOVED TO UTILS
 function createParamValue(id, value, weight = null) {
     let param = {
         "id": id,
@@ -129,14 +130,7 @@ function clearAnimation(target) {
 }
 
 function createNewParameter(paramName, explanation, min, max, defaultValue) {
-    let data = {
-        "parameterName": paramName,
-        "explanation": explanation,
-        "min": min,
-        "max": max,
-        "defaultValue": defaultValue
-    };
-    let request = utils.buildRequest("ParameterCreationRequest", data);
+    let request = utils.createNewParameter(paramName, explanation, min, max, defaultValue);
     console.log("ParameterCreationRequest", request);
     vtsConnection.send(request);
 }

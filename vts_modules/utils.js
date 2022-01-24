@@ -14,4 +14,29 @@ function buildRequest(type, data, requestId = "testId") {
     return returnValue;
 }
 
-exports.buildRequest = buildRequest;
+function createNewParameter(paramName, explanation, min, max, defaultValue) {
+    let data = {
+        "parameterName": paramName,
+        "explanation": explanation,
+        "min": min,
+        "max": max,
+        "defaultValue": defaultValue
+    };
+    return buildRequest("ParameterCreationRequest", data);
+}
+
+function createParamValue(id, value, weight = null) {
+    let param = {
+        "id": id,
+        "value": value
+    }
+    if (weight) param.weight = weight;
+    return param;
+}
+
+//exports.buildRequest = buildRequest;
+module.exports = {
+    buildRequest: buildRequest,
+    createNewParameter: createNewParameter,
+    createParamValue: createParamValue
+}
