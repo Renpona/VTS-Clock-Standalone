@@ -2,11 +2,11 @@
 <html>
     <head>
         <title>CLOCK TIME FOR THE TIME CLOCK</title>
-        <!--<link rel='stylesheet' href=''>-->
+        <link rel='stylesheet' href='css/styles.css'>
     </head>
     <body>
         <div id="status">
-            <div id="connectionState"></div>
+            <div id="connectionState">Not Connected</div>
             <div id="processStatus">
                 <span>Mode: </span><span id="modeStatus"></span>
             </div>
@@ -22,7 +22,11 @@
                 <option value="timer">Timer</option>
                 <option value="number">Number</option>
             </select>
-            <div id="clock"></div>
+            <div id="disable">No mode selected.</div>
+            <div id="clock">
+                <input type="radio" name="24hour" id="24hour" value="24hour" checked>
+                <label for="24hour">24-hour Time</label>
+            </div>
             <div id="timer">
                 <label for="seconds">Time in Seconds: </label><input type="number" name="seconds" id="timerSetting" />
                 <label for="timerStyle">Count Direction: </label><select name="timerStyle" id="timerStyle">
