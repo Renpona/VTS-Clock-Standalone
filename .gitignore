@@ -2,6 +2,7 @@
 *token.txt
 batches/
 frontend/script/main.js
+frontend/script/main.js.map
 
 # Logs
 logs
