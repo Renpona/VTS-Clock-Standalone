@@ -1,5 +1,6 @@
 const utils = require('../vts_modules/utils');
 import { createNewParameter, sendRequest } from './vts-script.js';
+import { detailedStatus } from './frontend-script.js';
 
 
 var timeKeeper; // Stores the setInterval used to keep the clock running
@@ -29,12 +30,13 @@ function startClock(mode, data) {
         var direction = data.direction;
     } else if (mode == "number") {
         inputTime = data.number;
+        detailedStatus(data.number);
         inputObject = parseNumberToObject(inputTime, false);
     }
     
     switch (mode) {
         case "number":
-            timeKeeper = setInterval(parseObjectToParams, 800, inputObject);
+            timeKeeper = setInterval(setNumber, 800, inputObject);
             break;
         case "timer":
             let startTime = Date.now();
@@ -63,6 +65,7 @@ function realTimeClock() {
     let minuteData = parseMinutes(time);
     Object.assign(hourData, minuteData);
     parseObjectToParams(hourData);
+    detailedStatus(`${hourData.Digit1}${hourData.Digit2}:${minuteData.Digit3}${minuteData.Digit4}`);
 }
 
 function parseHours(time) {
@@ -136,7 +139,14 @@ function timer(inputTime, startTime, direction = "down") {
     let seconds = Math.floor((minuteSecondValue - minutes) * 60).toString().padStart(2, '0');
 
     let timeString = parseNumberToObject(minutes.toString().concat(seconds), true);
-    parseObjectToParams(timeString);
+    if (minuteSecondValue >= 0) {
+        parseObjectToParams(timeString);
+        detailedStatus(`${minutes}:${seconds}`);
+    }
+}
+
+function setNumber(inputObject) {
+    parseObjectToParams(inputObject);
 }
 
 function parseNumberToObject(inputNumber, separator) {

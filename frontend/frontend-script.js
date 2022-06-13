@@ -34,6 +34,10 @@ function colorText(element, success) {
     else element.classList.add("error");
 }
 
+function detailedStatus(message) {
+    document.getElementById("detailedStatus").textContent = message;
+}
+
 //
 //     MAIN CODE
 //
@@ -88,3 +92,5 @@ function controlsController() {
         }
     });
 }
+
+export { detailedStatus }
