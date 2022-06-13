@@ -4,7 +4,9 @@ import { detailedStatus } from './frontend-script.js';
 
 
 var timeKeeper; // Stores the setInterval used to keep the clock running
-var mode;
+
+var timerStopFlag = false;
+var timerStatus;
 
 var currDisplay = {
     "Digit1": 0,
@@ -39,6 +41,8 @@ function startClock(mode, data) {
             timeKeeper = setInterval(setNumber, 800, inputObject);
             break;
         case "timer":
+            timerStatus = null;
+            timerStopFlag = false;
             let startTime = Date.now();
             timeKeeper = setInterval(timer, 200, inputTime, startTime, direction);
             break;
@@ -143,6 +147,38 @@ function timer(inputTime, startTime, direction = "down") {
         parseObjectToParams(timeString);
         detailedStatus(`${minutes}:${seconds}`);
     }
+    if (timerStopFlag == true) {
+        clearInterval(timeKeeper);
+        timerStatus = {
+            time: remainingTime,
+            direction: direction
+        };
+        timerStopFlag = false;
+        timeKeeper = setInterval(setNumber, 800, parseNumberToObject(remainingTime.toString(), true));
+    }
+}
+
+function timerStop() {
+    timerStopFlag = true;
+}
+
+function timerRestart() {
+    timerStopFlag = false;
+    clearInterval(timeKeeper);
+    if (timerStatus) {
+        let startTime = Date.now();
+        timeKeeper = setInterval(timer, 200, timerStatus.time, startTime, timerStatus.direction);
+        timerStatus = null;
+    }
+    else {
+        console.warn("Tried to restart the timer, but there was no paused timer data!");
+    }
+}
+
+function timerClear() {
+    timerStatus = null;
+    timerStopFlag = false;
+    clearInterval(timeKeeper);
 }
 
 function setNumber(inputObject) {
@@ -187,4 +223,4 @@ function sendNumberRequest(paramArray) {
     sendRequest(request);
 }
 
-export { initClock, startClock }
+export { initClock, startClock, timerStop, timerRestart, timerClear }
