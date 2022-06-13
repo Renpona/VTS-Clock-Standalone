@@ -6,6 +6,10 @@ initHandlers();
 
 function initHandlers() {
     document.getElementById("modeSelect").addEventListener('input', controlsController);
+    document.getElementById("connectionHelp").addEventListener('click', (event) => { 
+        event.preventDefault();
+        document.getElementById("connectionHelpSection").classList.toggle("hidden");
+    });
     
     document.getElementById("connectBtn").addEventListener('click', () => connect(document.getElementById("portInput").value));
     document.getElementById("updateBtn").addEventListener('click', sendUpdatedValues);
@@ -16,9 +20,30 @@ function initHandlers() {
     displayMode("disable");
 }
 
+//
+//  UTILITY FUNCTIONS
+//
+function transitionShow(element) {
+    element.classList.toggle("hidden");
+}
+
+// add success/error colors to important messages
+function colorText(element, success) {
+    element.classList.remove("success", "error");
+    if (success == true) element.classList.add("success");
+    else element.classList.add("error");
+}
+
+//
+//     MAIN CODE
+//
+
 function updateConnectionState(connected, message) {
     connectionStatus = connected;
-    document.getElementById("connectionState").textContent = message;
+    let statusElement = document.getElementById("connectionState");
+    statusElement.textContent = message;
+    if (connected == true) colorText(statusElement, true);
+    else colorText(statusElement, false);
 }
 
 function sendUpdatedValues() {

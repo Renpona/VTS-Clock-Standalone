@@ -5,15 +5,20 @@
         <link rel='stylesheet' href='css/styles.css'>
     </head>
     <body>
-        <div id="status">
+        <div id="setup">
             <div id="connectionState">Not Connected</div>
-            <div id="processStatus">
-                <span>Mode: </span><span id="modeStatus"></span>
+            <label for="port">VTS API Port: </label><input type="number" name="port" id="portInput" value="8001" />
+            <input id="connectBtn" type="button" value="Connect"/> <a href="#" id="connectionHelp">Help!</a>
+            <div id="connectionHelpSection" class="transition hidden">
+                Make sure the circled switch is turned ON, and type the <span style="color: darkred; text-decoration: underline;">underlined</span> number into the "VTS API Port" textbox above.<br/>
+                <img src="img/portinfo.png" id="connectionHelpImg"  />
             </div>
         </div>
-        <div id="setup">
-            <label for="port">VTS API Port: </label><input type="number" name="port" id="portInput" value="8001" />
-            <input id="connectBtn" type="button" value="Connect"/>
+        <div id="status">
+            <div id="processStatus">
+                <span>Mode: </span><span id="modeStatus"></span><br/>
+                <span id="detailedStatus"></span>
+            </div>
         </div>
         <div class="controls">
             <select name="mode" id="modeSelect">
@@ -30,8 +35,8 @@
             <div id="timer">
                 <label for="seconds">Time in Seconds: </label><input type="number" name="seconds" id="timerSetting" />
                 <label for="timerStyle">Count Direction: </label><select name="timerStyle" id="timerStyle">
-                    <option value="up">Up</option>
                     <option value="down">Down</option>
+                    <option value="up">Up</option>
                 </select>
             </div>
             <div id="number">
