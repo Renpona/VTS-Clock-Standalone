@@ -151,7 +151,7 @@ function setNumber(inputObject) {
 
 function parseNumberToObject(inputNumber, separator) {
     let outputObject = {};
-    inputNumber.padStart(4, '0');
+    inputNumber = inputNumber.padStart(4, '0');
     for (let i = 0; i < 4; i++) {
         let digit = i + 1;
         outputObject["Digit" + digit] = inputNumber.charAt(i);
