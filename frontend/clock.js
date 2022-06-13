@@ -105,7 +105,7 @@ function parseMinutes(time) {
     } else if (minute <= 19 && minute > 9) {
         data.Digit4 = minute - 10;
         data.Digit3 = 1;
-    } else if (minute <= 9 && minute > 0) {
+    } else if (minute <= 9 && minute >= 0) {
         data.Digit4 = minute;
         data.Digit3 = 0;
     } else {
