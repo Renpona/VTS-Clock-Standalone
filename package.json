@@ -7,7 +7,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.js",
-    "watch": "webpack --watch --config webpack.config.js"
+    "watch": "webpack --watch --config webpack.config.js",
+    "predeploy": "webpack --config webpack-dist.config.js",
+    "deploy": "xcopy .\\frontend\\ ..\\renpona.github.io\\ /s /y"
   },
   "author": "Renpona",
   "license": "ISC",

@@ -1,0 +1,27 @@
+const path = require('path');
+
+module.exports = {
+    mode: 'production',
+    devtool: 'source-map',
+    entry: './frontend/frontend-script.js',
+    output: {
+        filename: 'main.js',
+        path: path.resolve(__dirname, 'frontend/script'),
+    },
+    module: {
+        rules: [
+            {
+                test: /\.css$/i,
+                use: ['style-loader', 'css-loader'],
+            },
+            {
+                test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                type: 'asset/resource',
+            },
+            {
+                test: /\.html$/i,
+                type: 'asset/resource',
+            }
+        ],
+    },
+};
