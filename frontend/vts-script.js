@@ -73,6 +73,11 @@ function parseResponse(response, connection) {
             updateConnectionState(false, response.data.reason);
         }
     }
+
+    // paying the price for never setting up a proper way to callback the stuff I send out
+    else if (response.messageType == "HotkeysInCurrentModelResponse") {
+        eventEmitter.emit("hotkeysLoaded", response.data.availableHotkeys);
+    }
 }
 
 function sendRequest(request) {

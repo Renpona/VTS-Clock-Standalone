@@ -1,5 +1,6 @@
+const utils = require('../vts_modules/utils');
 import { connect, eventEmitter } from './vts-script.js';
-import { initClock, startClock, timerClear, timerRestart, timerStop } from './clock.js';
+import { initClock, startClock, timerClear, timerRestart, timerStop, hotkeyList, loadHotkeys, storeHotkeys, storeAlarmValue } from './clock.js';
 
 var connectionStatus = false;
 initHandlers();
@@ -32,10 +33,19 @@ function initHandlers() {
         timerClear();
     });
     
+    //connection handlers
     document.getElementById("connectBtn").addEventListener('click', () => connect(document.getElementById("portInput").value));
     document.getElementById("updateBtn").addEventListener('click', sendUpdatedValues);
     eventEmitter.on("connectionState", updateConnectionState);
+
+    //clock handlers
     eventEmitter.once("authComplete", initClock);
+
+    //alarm handlers
+    document.getElementById("alarmHotkeyList").addEventListener('input', setAlarm);
+    eventEmitter.on("hotkeysLoaded", storeHotkeys);
+    eventEmitter.on("hotkeysLoaded", initHotkeyList);
+    eventEmitter.once("authComplete", loadHotkeys);
 
     controlsController();
     displayMode("disable");
@@ -111,10 +121,32 @@ function controlsController() {
     controls.forEach((currentValue) => {
         if (currentValue.id == value) {
             currentValue.hidden = false;
+        } else if (value == "timer" && currentValue.id == "alarm") {
+            currentValue.hidden = false;
         } else {
             currentValue.hidden = true;
         }
     });
+}
+
+function initHotkeyList() {
+    //TODO: add ability to wipe and refresh list
+    if (hotkeyList) {
+        let select = document.getElementById("alarmHotkeyList");
+        hotkeyList.forEach(hotkey => {
+            let id = hotkey.hotkeyID;
+            let option = new Option(utils.hotkeyNamer(hotkey), id);
+            select.add(option);
+        });
+    } else {
+        console.error("hotkeyList storage empty");
+    }
+}
+
+//this is really more like "update alarm". sends the new alarm value to the clock code
+function setAlarm() {
+    let hotkeyId = document.getElementById("alarmHotkeyList").value;
+    storeAlarmValue(hotkeyId);
 }
 
 export { detailedStatus }
