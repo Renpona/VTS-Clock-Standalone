@@ -1,6 +1,7 @@
 const utils = require('../vts_modules/utils');
-import { createNewParameter, sendRequest } from './vts-script.js';
+import { createNewParameter, eventEmitter, sendRequest } from './vts-script.js';
 import { detailedStatus } from './frontend-script.js';
+import { getHotkeysList, activateHotkey } from '../vts_modules/hotkeys.js';
 
 
 var timeKeeper; // Stores the setInterval used to keep the clock running
@@ -17,8 +18,12 @@ var currDisplay = {
 };
 const clockParams = ["separator", "Digit1", "Digit2", "Digit3", "Digit4"];
 
+var hotkeyList;
+var alarmHotkeyId;
+
 function initClock() {
     createParams();
+    eventEmitter.on("alarm", triggerAlarm);
 }
 
 function startClock(mode, data) {
@@ -129,6 +134,7 @@ function timer(inputTime, startTime, direction = "down") {
     //console.log(remainingTime);
     if (remainingTime < 1) {
         clearInterval(timeKeeper);
+        eventEmitter.emit("alarm", alarmHotkeyId);
     }
     if (direction == "up") {
         remainingTime = Math.floor(timeElapsed / 1000);
@@ -223,4 +229,30 @@ function sendNumberRequest(paramArray) {
     sendRequest(request);
 }
 
-export { initClock, startClock, timerStop, timerRestart, timerClear }
+// ALARMS
+function loadHotkeys() {
+    let request = getHotkeysList(null);
+    sendRequest(request);
+}
+
+function storeHotkeys(hotkeys) {
+    hotkeyList = hotkeys;
+}
+
+function clearHotkeys() {
+    hotkeyList = null;
+}
+
+function storeAlarmValue(hotkeyId) {
+    alarmHotkeyId = hotkeyId;
+}
+
+function triggerAlarm() {
+    if (alarmHotkeyId != "none") {
+        let request = activateHotkey(alarmHotkeyId);
+        sendRequest(request);
+    }
+    //console.log(`Alarm trigger with hotkeyId ${alarmHotkeyId}`);
+}
+
+export { initClock, startClock, timerStop, timerRestart, timerClear, hotkeyList, loadHotkeys, storeHotkeys, clearHotkeys, storeAlarmValue, triggerAlarm }

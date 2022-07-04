@@ -8,7 +8,9 @@ function buildRequest(type, data, requestId = "testId") {
     let request = basicInfo;
     request.messageType = type;
     request.requestID = requestId;
-    request.data = data;
+    if (data) {
+        request.data = data;
+    }
     let returnValue = JSON.stringify(request);
     //console.log(returnValue);
     return returnValue;
@@ -34,9 +36,20 @@ function createParamValue(id, value, weight = null) {
     return param;
 }
 
+function hotkeyNamer(hotkey) {
+    if (hotkey.name) {
+        return `${hotkey.type}: ${hotkey.name}`;
+    } else if (hotkey.file) {
+        return `${hotkey.type}: ${hotkey.file}`;
+    } else {
+        return `${hotkey.type}: ${hotkey.hotkeyID}`;
+    }
+}
+
 //exports.buildRequest = buildRequest;
 module.exports = {
     buildRequest: buildRequest,
     createNewParameter: createNewParameter,
-    createParamValue: createParamValue
+    createParamValue: createParamValue,
+    hotkeyNamer: hotkeyNamer
 }

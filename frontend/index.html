@@ -33,7 +33,7 @@
                 <label for="24hour">24-hour Time</label>
             </div>
             <div id="timer">
-                <label for="seconds">Time in Seconds: </label><input type="number" name="seconds" id="timerSetting" placeholder="75" />
+                <label for="seconds">Time in Seconds: </label><input type="number" name="seconds" id="timerSetting" width="10" min="0" />
                 <label for="timerStyle">Count Direction: </label><select name="timerStyle" id="timerStyle">
                     <option value="down">Down</option>
                     <option value="up">Up</option>
@@ -42,11 +42,16 @@
                 <input type="button" id="timerResume" style="display:none" value="Resume Timer" />
                 <input type="button" id="timerClear" style="display:none" value="Clear Timer" />
             </div>
+            <div id="alarm">
+                <label for="hotkeys">Trigger hotkey when timer finishes?</label><select name="hotkeys" id="alarmHotkeyList">
+                    <option value="none">None</option>
+                </select><img src="img/refresh-16.png" alt="Refresh Hotkey List" title="Refresh Hotkey List" id="refreshHotkeys" />
+            </div>
             <div id="number">
                 <label for="inputVal">Input Value: </label>
                 <input type="number" name="inputVal" id="inputVal" maxlength=4 placeholder="0069" />
             </div>
-            <input id="updateBtn" type="submit" value="Send Updated Info" />
+            <input id="updateBtn" type="submit" value="Start!" />
         </div>
         <script src='script/main.js' async defer></script>
         <script>

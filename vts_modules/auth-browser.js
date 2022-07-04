@@ -8,7 +8,7 @@ class Auth {
         this.tokenSaved = false;
         this.storageName = "";
     }
-    checkForCredentials(name, developer) {
+    checkForCredentials(name, developer, thumbnail = null) {
         this.appName = name;
         this.devName = developer;
         this.storageName = "VTS " + this.appName;
@@ -17,16 +17,19 @@ class Auth {
             this.token = localStorage.getItem(this.storageName);
             return this.tokenAuth();
         } else {
-            return this.requestToken(name, developer);
+            return this.requestToken(name, developer, thumbnail);
         }
     }
-    requestToken(name, developer) {
+    requestToken(name, developer, thumbnail) {
         this.appName = name;
         this.devName = developer;
         let data = {
             "pluginName": this.appName,
             "pluginDeveloper": this.devName,
         };
+        if (thumbnail) {
+            data.pluginIcon = thumbnail;
+        }
         let request = utils.buildRequest("AuthenticationTokenRequest", data);
         console.log("Sent Message: " + request)
         return request;
