@@ -1,11 +1,12 @@
 const utils = require('../vts_modules/utils');
 import { connect, eventEmitter } from './vts-script.js';
-import { initClock, startClock, timerClear, timerRestart, timerStop, hotkeyList, loadHotkeys, storeHotkeys, storeAlarmValue } from './clock.js';
+import { initClock, startClock, timerClear, timerRestart, timerStop, hotkeyList, loadHotkeys, storeHotkeys, clearHotkeys, storeAlarmValue } from './clock.js';
 
 var connectionStatus = false;
 initHandlers();
 
 function initHandlers() {
+    // UI handlers
     document.getElementById("modeSelect").addEventListener('input', controlsController);
     document.getElementById("connectionHelp").addEventListener('click', (event) => { 
         event.preventDefault();
@@ -31,6 +32,10 @@ function initHandlers() {
         displayMode("disabled");
         detailedStatus("");
         timerClear();
+    });
+    document.getElementById("refreshHotkeys").addEventListener('click', () => {
+        clearHotkeyList();
+        initHotkeyList();
     });
     
     //connection handlers
@@ -130,7 +135,6 @@ function controlsController() {
 }
 
 function initHotkeyList() {
-    //TODO: add ability to wipe and refresh list
     if (hotkeyList) {
         let select = document.getElementById("alarmHotkeyList");
         hotkeyList.forEach(hotkey => {
@@ -139,8 +143,18 @@ function initHotkeyList() {
             select.add(option);
         });
     } else {
+        loadHotkeys();
         console.error("hotkeyList storage empty");
     }
+}
+
+function clearHotkeyList() {
+    let select = document.getElementById("alarmHotkeyList");
+    while (select.options.length > 0) {
+        select.remove(0);
+    }
+    clearHotkeys();
+    console.log("hotkeyList cleared");
 }
 
 //this is really more like "update alarm". sends the new alarm value to the clock code

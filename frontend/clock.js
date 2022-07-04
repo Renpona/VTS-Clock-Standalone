@@ -239,6 +239,10 @@ function storeHotkeys(hotkeys) {
     hotkeyList = hotkeys;
 }
 
+function clearHotkeys() {
+    hotkeyList = null;
+}
+
 function storeAlarmValue(hotkeyId) {
     alarmHotkeyId = hotkeyId;
 }
@@ -251,4 +255,4 @@ function triggerAlarm() {
     //console.log(`Alarm trigger with hotkeyId ${alarmHotkeyId}`);
 }
 
-export { initClock, startClock, timerStop, timerRestart, timerClear, hotkeyList, loadHotkeys, storeHotkeys, storeAlarmValue, triggerAlarm }
+export { initClock, startClock, timerStop, timerRestart, timerClear, hotkeyList, loadHotkeys, storeHotkeys, clearHotkeys, storeAlarmValue, triggerAlarm }
