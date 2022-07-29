@@ -1,3 +1,8 @@
+/**
+ * NOT USED
+ * This is an entry point for connecting to VTubeStudio in a Node-based application. Not used in this project, but left in as an example.
+ */
+
 const events = require('events');
 const WebSocketClient = require('websocket').client;
 const utils = require('./utils');

@@ -1,3 +1,7 @@
+/**
+ * Code for connecting to VTubeStudio in a browser-based application, using pure frontend Javascript (with Webpack to handle things like imports).
+ */
+
 const events = require('events');
 const utils = require('../vts_modules/utils.js');
 const Auth = require('../vts_modules/auth-browser.js');
